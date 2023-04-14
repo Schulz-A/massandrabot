@@ -1,7 +1,7 @@
 import asyncio
 
 import betterlogging
-from aiogram import Dispatcher, Bot
+from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
 
 from massandrabot.config import get_config

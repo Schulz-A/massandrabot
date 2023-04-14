@@ -1,7 +1,6 @@
-from typing import Dict, Any
+from typing import Any, Dict
 
 from sqlalchemy.ext.declarative import declarative_base
-
 
 Base = declarative_base()
 
