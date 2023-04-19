@@ -2,7 +2,11 @@ aiogram[redis]>=3.0.0b7
 environs~=9.5.0
 sqlalchemy>2.0.4
 asyncpg
+aiohttp~=3.8.4
 aiogram-dialog==2.0.0b16
 betterlogging==0.2.1
 aiofiles~=23.1.0
 redis~=4.5.1
+backoff~=2.2.1
+ujson~=5.7.0
+yarl~=1.8.2

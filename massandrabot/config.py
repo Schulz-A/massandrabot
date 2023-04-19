@@ -31,6 +31,7 @@ class DBConfig:
 
 @dataclass
 class Miscellaneous:
+    photo_host: str
     other_params: str = None
 
 
@@ -57,5 +58,7 @@ def get_config(path: str = None) -> Config:
             user=env.str('DB_USER'),
             database=env.str('DB_NAME'),
         ),
-        miscellaneous=Miscellaneous()
+        miscellaneous=Miscellaneous(
+            photo_host=env.str('PHOTO_HOST_API')
+        )
     )
