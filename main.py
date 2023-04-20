@@ -5,12 +5,12 @@ from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.memory import MemoryStorage
 from aiogram.utils.callback_answer import CallbackAnswerMiddleware
 
-from massandrabot.config import get_config
-from massandrabot.handlers.fixer_handlers import fix_router
-from massandrabot.handlers.start import start_router
-from massandrabot.infrastucture.apis.imgbbapi import IMGBBClient
-from massandrabot.infrastucture.database.setupdb import create_session_pool
-from massandrabot.middlewares.dbmiddleware import DataBaseMiddleWare
+from apis.imgbbapi import IMGBBClient
+from tg_bot.config import get_config
+from tg_bot.handlers.fixer_handlers import fix_router
+from tg_bot.handlers.start import start_router
+from tg_bot.infrastucture.database.functions.setup import create_session_pool
+from tg_bot.middlewares.dbmiddleware import DataBaseMiddleWare
 
 betterlogging.basic_colorized_config(level="INFO")
 
@@ -35,6 +35,7 @@ async def main():
 
     dp = Dispatcher(storage=storage, config=config, image_client=image_client)
     session_pool = await create_session_pool(config.db_config)
+    print(session_pool)
 
     routers = [
         start_router,
@@ -46,10 +47,10 @@ async def main():
 
     register_all_middlewares(dp, session_pool)
 
-    try:
-        await dp.start_polling(bot)
-    finally:
-        await on_shutdown(dp)
+
+    await dp.start_polling(bot)
+    # finally:
+    #     await on_shutdown(dp)
 
 
 if __name__ == "__main__":

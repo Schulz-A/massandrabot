@@ -5,8 +5,9 @@ from sqlalchemy.ext.declarative import declarative_base
 Base = declarative_base()
 
 
-class BaseModel(Base):
+class DataBaseModel(Base):
     __abstract__ = True
+    __mapper_args__ = {"eager_defaults": True}
 
     def get_attributes(self) -> Dict[Any, Any]:
         return {k: v for k, v in self.__dict__.items() if not k.startswith('_')}

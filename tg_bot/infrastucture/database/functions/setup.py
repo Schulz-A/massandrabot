@@ -3,8 +3,8 @@ from typing import AsyncContextManager, Callable
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 from sqlalchemy.orm import sessionmaker
 
-from massandrabot.config import DBConfig
-from massandrabot.infrastucture.database.models.base import BaseModel
+from tg_bot.config import DBConfig
+from tg_bot.infrastucture.database.models.base import DataBaseModel
 
 
 async def create_session_pool(db: DBConfig, echo=False) -> Callable[[], AsyncContextManager[AsyncSession]]:
@@ -18,7 +18,7 @@ async def create_session_pool(db: DBConfig, echo=False) -> Callable[[], AsyncCon
     )
 
     async with engine.begin() as conn:
-        await conn.run_sync(BaseModel.metadata.create_all)
+        await conn.run_sync(DataBaseModel.metadata.create_all)
 
     session_pool = sessionmaker(bind=engine, expire_on_commit=False, class_=AsyncSession)
     return session_pool

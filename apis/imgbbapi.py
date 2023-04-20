@@ -4,7 +4,7 @@ import aiohttp
 from aiogram import Bot
 from aiogram.types import PhotoSize
 
-from massandrabot.infrastucture.apis.base import BaseClient
+from apis.base import BaseClient
 
 
 class IMGBBClient(BaseClient):
