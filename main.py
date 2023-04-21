@@ -10,6 +10,7 @@ from tg_bot.config import get_config
 from tg_bot.handlers.fixer_handlers import fix_router
 from tg_bot.handlers.start import start_router
 from tg_bot.infrastucture.database.functions.setup import create_session_pool
+from tg_bot.middlewares.allowmiddleware import AllowMiddleWare
 from tg_bot.middlewares.dbmiddleware import DataBaseMiddleWare
 
 betterlogging.basic_colorized_config(level="INFO")
@@ -24,6 +25,7 @@ def register_all_middlewares(dp: Dispatcher, session_pool):
     dp.message.outer_middleware(DataBaseMiddleWare(session_pool))
     dp.callback_query.outer_middleware(DataBaseMiddleWare(session_pool))
     dp.callback_query.middleware(CallbackAnswerMiddleware())
+    dp.message.outer_middleware(AllowMiddleWare())
 
 
 async def main():
@@ -35,7 +37,6 @@ async def main():
 
     dp = Dispatcher(storage=storage, config=config, image_client=image_client)
     session_pool = await create_session_pool(config.db_config)
-    print(session_pool)
 
     routers = [
         start_router,
@@ -47,10 +48,10 @@ async def main():
 
     register_all_middlewares(dp, session_pool)
 
-
-    await dp.start_polling(bot)
-    # finally:
-    #     await on_shutdown(dp)
+    try:
+        await dp.start_polling(bot)
+    finally:
+        await on_shutdown(dp)
 
 
 if __name__ == "__main__":

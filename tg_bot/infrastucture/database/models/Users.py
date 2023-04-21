@@ -1,4 +1,5 @@
-from sqlalchemy import Column, UUID, String, ForeignKey, BigInteger, Boolean, TIMESTAMP
+from sqlalchemy import (TIMESTAMP, UUID, BigInteger, Boolean, Column,
+                        ForeignKey, String, func)
 
 from tg_bot.infrastucture.database.models.base import DataBaseModel
 
@@ -16,7 +17,7 @@ class Category(DataBaseModel):
 
     id = Column(UUID, primary_key=True, unique=True)
     name = Column(String(length=255))
-    Project = Column(UUID, ForeignKey("projects.id"))
+    Project = Column(UUID, ForeignKey("projects.id", ondelete="CASCADE"))
 
 
 class Article(DataBaseModel):
@@ -25,7 +26,7 @@ class Article(DataBaseModel):
     id = Column(UUID, primary_key=True, unique=True)
     name = Column(String(length=255))
     url = Column(String(length=510))
-    Category = Column(UUID, ForeignKey("categories.id"))
+    Category = Column(UUID, ForeignKey("categories.id", ondelete="CASCADE"))
 
 
 class User(DataBaseModel):
@@ -37,4 +38,4 @@ class User(DataBaseModel):
     allow = Column(Boolean, default=False)
     is_admin = Column(Boolean, default=False)
     photo_url = Column(String(length=510))
-    created_date = Column(TIMESTAMP(timezone=True))
+    created_date = Column(TIMESTAMP(timezone=True), default=func.now())

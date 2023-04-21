@@ -1,5 +1,5 @@
-from tg_bot.infrastucture.database.models.Users import Project, Category, Article, User
-
+from tg_bot.infrastucture.database.models.Users import (Article, Category,
+                                                        Project, User)
 
 __all__ = [
     'Project',

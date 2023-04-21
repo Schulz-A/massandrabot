@@ -1,17 +1,18 @@
 from aiogram import Bot, Router, types
-from aiogram.types import BufferedInputFile
+from aiogram.filters import CommandStart
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from apis.imgbbapi import IMGBBClient
-from tg_bot.config import Config
 from tg_bot.misc.startkeyboard import start_keyboard
 
 start_router = Router()
 
 
+@start_router.message(CommandStart())
+async def start_bot(message: types.Message, bot: Bot):
+    photo_url = "https://drive.google.com/uc?export=view&id=18TixwabEa6ICmVfgClK34JXa9jIQCRl0"
+    await bot.send_photo(chat_id=message.chat.id, photo=photo_url, caption="HI!", reply_markup=start_keyboard)
+
+
 @start_router.message()
-async def get_photo(message: types.Message, bot: Bot, image_client: IMGBBClient, config: Config, session: AsyncSession):
-    print(session.__dict__)
-    with open("logo.jpg", "rb") as photo:
-        photo = BufferedInputFile(photo.read(), "logo")
-        await bot.send_photo(chat_id=message.chat.id, photo=photo, caption="HI!", reply_markup=start_keyboard)
+async def start_education_dialog(message: types.Message):
+    await message.answer("Hi")
