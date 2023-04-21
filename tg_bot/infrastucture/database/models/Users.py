@@ -37,5 +37,5 @@ class User(DataBaseModel):
     full_name = Column(String(length=255), default=None)
     allow = Column(Boolean, default=False)
     is_admin = Column(Boolean, default=False)
-    photo_url = Column(String(length=510))
+    photo_path = Column(String(length=510))
     created_date = Column(TIMESTAMP(timezone=True), default=func.now())

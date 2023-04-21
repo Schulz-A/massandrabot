@@ -1,9 +1,8 @@
 from typing import Any, Awaitable, Callable, Dict
 
 from aiogram import BaseMiddleware, Bot
-from aiogram.types import Message
+from aiogram.types import Message, BufferedInputFile
 
-from apis.imgbbapi import IMGBBClient
 from tg_bot.infrastucture.database.functions.queries import get_user, add_user, fetch_users_with_params
 from tg_bot.infrastucture.database.models import User
 
@@ -23,20 +22,20 @@ class AllowMiddleWare(BaseMiddleware):
 
         if not user:
             bot: Bot = data.get("bot")
-            image_client: IMGBBClient = data.get("image_client")
             chat = await bot.get_chat(event_from_user.id)
 
             if chat.photo:
-                link = await image_client.upload_photo(chat.photo.big_file_id, bot, expiration=0, name=str(user_id))
+                path = f"users_photo/{user_id}.jpg"
+                await bot.download(chat.photo.big_file_id, path)
             else:
-                link = image_client.user_default_img
+                path = "users_photo/question_mark.jpg"
 
             await add_user(
                 session,
                 event_from_user.id,
                 event_from_user.username,
                 event_from_user.full_name,
-                link
+                path
             )
 
             all_admins = await fetch_users_with_params(session, User.is_admin == True)
@@ -46,10 +45,12 @@ class AllowMiddleWare(BaseMiddleware):
                                f"username: {event_from_user.username}\n" \
                                f"Имя: {event_from_user.full_name}"
 
+            photo = BufferedInputFile.from_file(path, str(user_id))
+
             for admin in all_admins:
                 await bot.send_photo(
                     chat_id=admin.id,
-                    photo=link,
+                    photo=photo,
                     caption=text_for_message
                 )
             return

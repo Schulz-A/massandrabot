@@ -12,12 +12,12 @@ async def get_user(session: AsyncSession, *clauses):
     return user
 
 
-async def add_user(session: AsyncSession, user_id, username, full_name, photo_url):
+async def add_user(session: AsyncSession, user_id, username, full_name, photo_path):
     stmt = insert(User).values(
         id=user_id,
         username=username,
         full_name=full_name,
-        photo_url=photo_url
+        photo_path=photo_path
     ).on_conflict_do_nothing()
 
     await session.execute(stmt)
