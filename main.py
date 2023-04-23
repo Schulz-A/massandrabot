@@ -7,6 +7,7 @@ from aiogram.utils.callback_answer import CallbackAnswerMiddleware
 
 from apis.imgbbapi import IMGBBClient
 from tg_bot.config import get_config
+from tg_bot.dialogs.dialogregister import register_all_dialogs
 from tg_bot.handlers.fixer_handlers import fix_router
 from tg_bot.handlers.start import start_router
 from tg_bot.infrastucture.database.functions.setup import create_session_pool
@@ -26,6 +27,7 @@ def register_all_middlewares(dp: Dispatcher, session_pool):
     dp.callback_query.outer_middleware(DataBaseMiddleWare(session_pool))
     dp.callback_query.middleware(CallbackAnswerMiddleware())
     dp.message.outer_middleware(AllowMiddleWare())
+    dp.callback_query.outer_middleware(AllowMiddleWare())
 
 
 async def main():
@@ -47,6 +49,7 @@ async def main():
     dp.include_routers(*routers)
 
     register_all_middlewares(dp, session_pool)
+    register_all_dialogs(dp)
 
     try:
         await dp.start_polling(bot)

@@ -3,24 +3,24 @@ import os
 
 from aiogram import Bot, Router, types, F
 from aiogram.filters import CommandStart
-from sqlalchemy.ext.asyncio import AsyncSession
+from aiogram_dialog import DialogManager, ShowMode, StartMode
 
-from tg_bot.infrastucture.database.functions.queries import get_user
-from tg_bot.infrastucture.database.models import User
-from tg_bot.misc.startkeyboard import start_keyboard
+from tg_bot.dialogs.education_dialog.states import EducationStates
+from tg_bot.dialogs.start_dialog.states import StartState
 
 start_router = Router()
 
 
 @start_router.message(CommandStart())
-async def start_bot(message: types.Message, bot: Bot):
-    photo_url = "https://drive.google.com/uc?export=view&id=18TixwabEa6ICmVfgClK34JXa9jIQCRl0"
-    await bot.send_photo(chat_id=message.chat.id, photo=photo_url, caption="HI!", reply_markup=start_keyboard)
+async def start_bot(message: types.Message, dialog_manager: DialogManager):
+    dialog_manager.show_mode = ShowMode.SEND
+    await dialog_manager.start(StartState.start_state, mode=StartMode.RESET_STACK)
 
 
-@start_router.message()
-async def start_education_dialog(message: types.Message):
-    await message.answer("Hi")
+# @start_router.callback_query(F.data == "education")
+# async def start_education_dialog(call: types.CallbackQuery, dialog_manager: DialogManager):
+#     # dialog_manager.show_mode = ShowMode.SEND
+#     await dialog_manager.start(EducationStates.select_project, mode=StartMode.RESET_STACK)
 
 
 # @start_router.message(F.text == "удалить")
