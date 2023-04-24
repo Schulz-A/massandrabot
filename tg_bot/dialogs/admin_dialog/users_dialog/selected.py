@@ -3,7 +3,7 @@ from aiogram_dialog import DialogManager
 from aiogram_dialog.widgets.kbd import Button, Select
 
 from tg_bot.dialogs.admin_dialog.states import AdminPanelStates
-from tg_bot.infrastucture.database.functions.queries import update_user
+from tg_bot.infrastucture.database.functions.queries import update_user, delete_user
 from tg_bot.infrastucture.database.models import User
 
 
@@ -30,3 +30,18 @@ async def on_admin(call: types.CallbackQuery, widget: Button, dialog_manager: Di
     user_id = dialog_manager.dialog_data.get("user_id")
 
     await update_user(session, User.id == user_id, is_admin=not is_admin)
+
+
+async def on_delete_user(call: types.CallbackQuery, widget: Button, dialog_manager: DialogManager):
+    await dialog_manager.switch_to(AdminPanelStates.except_delete_user)
+
+
+async def except_deleting(call: types.CallbackQuery, widget: Button, dialog_manager: DialogManager):
+    session = dialog_manager.middleware_data.get("session")
+    user_id = dialog_manager.dialog_data.get("user_id")
+
+    full_name = await delete_user(session, User.id == user_id)
+
+    await call.answer(f"Пользователь {full_name} удален!", show_alert=True)
+
+    await dialog_manager.switch_to(AdminPanelStates.select_user)

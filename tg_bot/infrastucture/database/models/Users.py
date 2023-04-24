@@ -15,6 +15,7 @@ class Project(DataBaseModel):
     abbreviation = Column(String(length=20))
     categories = relationship("Category", back_populates="project")
 
+
 class Category(DataBaseModel):
     __tablename__ = "categories"
 
@@ -32,7 +33,10 @@ class Article(DataBaseModel):
     name = Column(String(length=255))
     url = Column(String(length=510))
     category_id = Column(UUID, ForeignKey("categories.id", ondelete="CASCADE"))
+    project_id = Column(UUID, ForeignKey("projects.id", ondelete="CASCADE"))
     category = relationship("Category", back_populates="articles")
+    project = relationship("Project")
+
 
 class User(DataBaseModel):
     __tablename__ = "users"

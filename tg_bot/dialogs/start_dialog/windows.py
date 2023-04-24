@@ -5,12 +5,13 @@ from aiogram_dialog.widgets.text import Const
 
 from tg_bot.dialogs.start_dialog import states, selected
 from tg_bot.dialogs.start_dialog.states import StartState
+from tg_bot.misc.Enums import Enums
 
 
 def start_window():
     return Window(
         StaticMedia(
-            path="logo.jpg"
+            path=Enums.logo_path.value
         ),
         Const("Добро пожаловать!!!"),
         Group(

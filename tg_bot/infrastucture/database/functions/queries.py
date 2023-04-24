@@ -1,4 +1,4 @@
-from sqlalchemy import select, update
+from sqlalchemy import select, update, delete
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
@@ -17,6 +17,13 @@ async def update_user(session: AsyncSession, *clauses, **values):
     stmt = update(User).where(*clauses).values(**values)
     await session.execute(stmt)
     await session.commit()
+
+
+async def delete_user(session: AsyncSession, *clauses):
+    stmt = delete(User).where(*clauses).returning(User.full_name)
+    result = await session.execute(stmt)
+    await session.commit()
+    return result.scalar()
 
 
 async def get_users(session: AsyncSession, *clauses):
@@ -60,7 +67,7 @@ async def get_categories(session: AsyncSession, *clauses):
 
 
 async def get_articles(session: AsyncSession, *clauses):
-    stmt = select(Article).options(selectinload(Article.category)).where(*clauses)
+    stmt = select(Article).options(selectinload(Article.category), selectinload(Article.project)).where(*clauses)
     result = await session.execute(stmt)
     await session.commit()
     return result.scalars().all()

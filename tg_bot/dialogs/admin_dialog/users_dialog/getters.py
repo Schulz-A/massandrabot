@@ -22,6 +22,7 @@ async def get_user_info(dialog_manager: DialogManager, **middleware_data):
 
     dialog_manager.dialog_data.update(allow=user.allow)
     dialog_manager.dialog_data.update(is_admin=user.is_admin)
+    dialog_manager.dialog_data.update(full_name=user.full_name)
 
     data = {
         "full_name": user.full_name,
@@ -29,6 +30,17 @@ async def get_user_info(dialog_manager: DialogManager, **middleware_data):
         "id": user.id,
         "allow": "Разрешен" if user.allow else "Запрещен",
         "is_admin": "Да" if user.is_admin else "Нет"
+    }
+
+    return data
+
+
+async def get_deleting_user(dialog_manager: DialogManager, **middleware_data):
+    # print(dialog_manager.dialog_data)
+    full_name = dialog_manager.dialog_data.get("full_name")
+
+    data = {
+        "full_name": full_name
     }
 
     return data

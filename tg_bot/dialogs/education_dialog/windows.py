@@ -7,13 +7,14 @@ from aiogram_dialog.widgets.text import Format, Const
 
 from tg_bot.dialogs.education_dialog import keyboards, selected, getters
 from tg_bot.dialogs.education_dialog.states import EducationStates
+from tg_bot.misc.Enums import Enums
 from tg_bot.misc.SelectURL import SelectURL
 
 
 def chose_project_window():
     return Window(
         StaticMedia(
-            path="logo.jpg"
+            path=Enums.logo_path.value
         ),
         Format("Выбери проект!"),
         keyboards.paginated_projects(selected.on_chosen_project),
@@ -26,7 +27,7 @@ def chose_project_window():
 def chose_category_window():
     return Window(
         StaticMedia(
-            path="logo.jpg"
+            path=Enums.logo_path.value
         ),
         Const("Выбери категорию!"),
         Group(
@@ -48,7 +49,7 @@ def chose_category_window():
 def chose_article_window():
     return Window(
         StaticMedia(
-            path="logo.jpg"
+            path=Enums.logo_path.value
         ),
         Const("hi"),
         Group(
