@@ -1,6 +1,6 @@
 from aiogram_dialog import DialogManager
 
-from tg_bot.infrastucture.database.functions.queries import get_users, get_user
+from tg_bot.infrastucture.database.functions.queries import get_user, get_users
 from tg_bot.infrastucture.database.models import User
 
 

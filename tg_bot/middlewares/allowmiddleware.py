@@ -1,9 +1,10 @@
 from typing import Any, Awaitable, Callable, Dict
 
 from aiogram import BaseMiddleware, Bot
-from aiogram.types import Message, BufferedInputFile
+from aiogram.types import BufferedInputFile, Message
 
-from tg_bot.infrastucture.database.functions.queries import get_user, add_user, fetch_users_with_params
+from tg_bot.infrastucture.database.functions.queries import (
+    add_user, fetch_users_with_params, get_user)
 from tg_bot.infrastucture.database.models import User
 
 
@@ -38,7 +39,7 @@ class AllowMiddleWare(BaseMiddleware):
                 path
             )
 
-            all_admins = await fetch_users_with_params(session, User.is_admin == True)
+            all_admins = await fetch_users_with_params(session, User.is_admin == True)  # noqa:E712
 
             text_for_message = f"У Вас новый пользователь в боте\n\n" \
                                f"id: {user_id}\n" \

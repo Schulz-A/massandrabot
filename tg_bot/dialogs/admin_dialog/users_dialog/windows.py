@@ -1,12 +1,13 @@
 import operator
 
 from aiogram_dialog import Window
-from aiogram_dialog.widgets.kbd import ScrollingGroup, Select, Back, Group, Button
+from aiogram_dialog.widgets.kbd import (Back, Button, Group, ScrollingGroup,
+                                        Select)
 from aiogram_dialog.widgets.media import StaticMedia
-from aiogram_dialog.widgets.text import Format, Const
+from aiogram_dialog.widgets.text import Const, Format
 
 from tg_bot.dialogs.admin_dialog.states import AdminPanelStates
-from tg_bot.dialogs.admin_dialog.users_dialog import selected, getters
+from tg_bot.dialogs.admin_dialog.users_dialog import getters, selected
 from tg_bot.misc.Enums import Enums
 
 

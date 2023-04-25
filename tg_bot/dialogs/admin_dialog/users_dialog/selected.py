@@ -1,10 +1,15 @@
+import asyncio
+import os
+
 from aiogram import types
 from aiogram_dialog import DialogManager
 from aiogram_dialog.widgets.kbd import Button, Select
 
 from tg_bot.dialogs.admin_dialog.states import AdminPanelStates
-from tg_bot.infrastucture.database.functions.queries import update_user, delete_user
+from tg_bot.infrastucture.database.functions.queries import (delete_user,
+                                                             update_user)
 from tg_bot.infrastucture.database.models import User
+from tg_bot.misc.Enums import Enums
 
 
 async def open_users_panel(call: types.CallbackQuery, widget: Button, dialog_manager: DialogManager):
@@ -40,8 +45,11 @@ async def except_deleting(call: types.CallbackQuery, widget: Button, dialog_mana
     session = dialog_manager.middleware_data.get("session")
     user_id = dialog_manager.dialog_data.get("user_id")
 
-    full_name = await delete_user(session, User.id == user_id)
+    full_name, photo_path = await delete_user(session, User.id == user_id)
 
     await call.answer(f"Пользователь {full_name} удален!", show_alert=True)
+
+    if photo_path != Enums.question_mark.value:
+        await asyncio.to_thread(os.unlink, photo_path)
 
     await dialog_manager.switch_to(AdminPanelStates.select_user)

@@ -1,11 +1,11 @@
 import operator
 
 from aiogram_dialog import Window
-from aiogram_dialog.widgets.kbd import Button, Cancel, Back, Group, Select, Url
+from aiogram_dialog.widgets.kbd import Back, Cancel, Group, Select
 from aiogram_dialog.widgets.media import StaticMedia
-from aiogram_dialog.widgets.text import Format, Const
+from aiogram_dialog.widgets.text import Const, Format
 
-from tg_bot.dialogs.education_dialog import keyboards, selected, getters
+from tg_bot.dialogs.education_dialog import getters, keyboards, selected
 from tg_bot.dialogs.education_dialog.states import EducationStates
 from tg_bot.misc.Enums import Enums
 from tg_bot.misc.SelectURL import SelectURL

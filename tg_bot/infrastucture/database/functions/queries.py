@@ -1,9 +1,12 @@
-from sqlalchemy import select, update, delete
+from typing import Union
+
+from sqlalchemy import delete, select, update
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
 
-from tg_bot.infrastucture.database.models import User, Project, Category, Article
+from tg_bot.infrastucture.database.models import (Article, Category, Project,
+                                                  User)
 
 
 async def get_user(session: AsyncSession, *clauses):
@@ -20,10 +23,10 @@ async def update_user(session: AsyncSession, *clauses, **values):
 
 
 async def delete_user(session: AsyncSession, *clauses):
-    stmt = delete(User).where(*clauses).returning(User.full_name)
+    stmt = delete(User).where(*clauses).returning(User.full_name, User.photo_path)
     result = await session.execute(stmt)
     await session.commit()
-    return result.scalar()
+    return result.first()
 
 
 async def get_users(session: AsyncSession, *clauses):
@@ -71,3 +74,9 @@ async def get_articles(session: AsyncSession, *clauses):
     result = await session.execute(stmt)
     await session.commit()
     return result.scalars().all()
+
+
+async def update_item(session: AsyncSession, table: Union[Article, Project, Category], *clauses, **values):
+    stmt = update(table).where(*clauses).values(**values)
+    await session.execute(stmt)
+    await session.commit()

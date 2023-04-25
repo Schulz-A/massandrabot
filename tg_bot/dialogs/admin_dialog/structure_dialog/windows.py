@@ -2,12 +2,14 @@ import operator
 
 from aiogram_dialog import Window
 from aiogram_dialog.widgets.input import TextInput
-from aiogram_dialog.widgets.kbd import Row, Button, Back, Group, Select, ScrollingGroup
+from aiogram_dialog.widgets.kbd import (Button, Group, Row, ScrollingGroup,
+                                        Select)
 from aiogram_dialog.widgets.media import StaticMedia
 from aiogram_dialog.widgets.text import Const, Format
 
 from tg_bot.dialogs.admin_dialog.states import AdminPanelStates
-from tg_bot.dialogs.admin_dialog.structure_dialog import selected, getters, backs, keyboards
+from tg_bot.dialogs.admin_dialog.structure_dialog import (backs, getters,
+                                                          keyboards, selected)
 from tg_bot.misc.Enums import Enums
 
 
@@ -33,7 +35,7 @@ def projects_window():
         ),
         Group(
             Select(
-                Format("{item.name}"),
+                Format("{item.name} ({item.abbreviation})"),
                 id="project_stru_gr",
                 item_id_getter=operator.attrgetter("id"),
                 items="projects",
@@ -144,7 +146,8 @@ def change_column():
         Const("Напишите новое значение"),
         TextInput(
             id="entering",
-            on_success=selected.on_entered
+            on_success=selected.on_entered,
+            on_error=selected.on_entered
         ),
         Button(Const("Отменить"), id="back_on_stru", on_click=backs.back_on_structure_panel),
         state=AdminPanelStates.change_column

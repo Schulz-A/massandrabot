@@ -1,13 +1,12 @@
-from operator import itemgetter
-from typing import Text, Union, Sequence, TypeVar, Callable, Any, Dict, Awaitable
+from typing import (Any, Awaitable, Callable, Dict, Sequence, Text, TypeVar,
+                    Union)
 
 from aiogram.types import CallbackQuery, InlineKeyboardButton
 from aiogram_dialog import DialogManager
 from aiogram_dialog.dialog import ChatEvent
 from aiogram_dialog.widgets.common import ManagedWidget, WhenCondition
 from aiogram_dialog.widgets.kbd import Select
-from aiogram_dialog.widgets.kbd.select import get_identity
-from aiogram_dialog.widgets.widget_event import WidgetEventProcessor, ensure_event_processor
+from aiogram_dialog.widgets.widget_event import WidgetEventProcessor
 
 T = TypeVar("T")
 TypeFactory = Callable[[str], T]
@@ -52,7 +51,6 @@ class SelectURL(Select):
             manager: DialogManager,
     ) -> InlineKeyboardButton:
         data = {"data": data, "item": item, "pos": pos + 1, "pos0": pos}
-        item_id = self.item_id_getter(item)
         return InlineKeyboardButton(
             text=await self.text.render_text(data, manager),
             url=await self.url.render_text(data, manager),

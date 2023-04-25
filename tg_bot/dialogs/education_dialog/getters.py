@@ -1,11 +1,11 @@
 from typing import List
 
 from aiogram_dialog import DialogManager
-from aiogram_dialog.widgets.kbd import Group, Url
-from aiogram_dialog.widgets.text import Const
 
-from tg_bot.infrastucture.database.functions.queries import get_projects, get_categories, get_articles
-from tg_bot.infrastucture.database.models import Category, Article
+from tg_bot.infrastucture.database.functions.queries import (get_articles,
+                                                             get_categories,
+                                                             get_projects)
+from tg_bot.infrastucture.database.models import Article, Category
 
 
 async def get_projects_to_window(dialog_manager: DialogManager, **middleware_data):

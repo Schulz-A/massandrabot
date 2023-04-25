@@ -4,7 +4,8 @@ from aiogram_dialog.widgets.media import StaticMedia
 from aiogram_dialog.widgets.text import Const
 
 from tg_bot.dialogs.admin_dialog import states
-from tg_bot.dialogs.admin_dialog.structure_dialog.selected import open_structure_panel
+from tg_bot.dialogs.admin_dialog.structure_dialog.selected import \
+    open_structure_panel
 from tg_bot.dialogs.admin_dialog.users_dialog.selected import open_users_panel
 from tg_bot.dialogs.education_dialog.selected import cancel_window
 from tg_bot.misc.Enums import Enums
