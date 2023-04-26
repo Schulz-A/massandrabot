@@ -1,6 +1,7 @@
 import asyncio
 
 import betterlogging
+import gspread_asyncio
 from aiogram import Bot, Dispatcher
 from aiogram.fsm.storage.redis import DefaultKeyBuilder, RedisStorage
 from aiogram.utils.callback_answer import CallbackAnswerMiddleware
@@ -37,8 +38,17 @@ async def main():
     storage = RedisStorage.from_url("redis://127.0.0.1:6379/0", key_builder=DefaultKeyBuilder(with_destiny=True))
     # storage = MemoryStorage()
     image_client = IMGBBClient(config.miscellaneous.photo_host)
+    google_client_manager = gspread_asyncio.AsyncioGspreadClientManager(
+        config.miscellaneous.scoped_credentials
+    )
 
-    dp = Dispatcher(storage=storage, config=config, image_client=image_client)
+    dp = Dispatcher(
+        storage=storage,
+        config=config,
+        image_client=image_client,
+        google_client_manager=google_client_manager
+    )
+
     session_pool = await create_session_pool(config.db_config)
 
     routers = [
