@@ -23,8 +23,6 @@ async def get_category_to_window(dialog_manager: DialogManager, **middleware_dat
     session = middleware_data.get("session")
     project_id = dialog_manager.dialog_data.get("project_id")
     categories = await get_categories(session, Category.project_id == project_id)
-    cat: Category = categories[0]
-    print(cat.project.name)
 
     data = {
         "categories": categories

@@ -19,3 +19,23 @@ class AdminPanelStates(StatesGroup):
     article_info = State()
 
     change_column = State()
+    except_delete_item = State()
+
+    project_name = State()
+    project_abbreviation = State()
+    project_except_add = State()
+
+    category_name = State()
+    category_project = State()
+    category_except_add = State()
+
+    article_name = State()
+    article_url = State()
+    article_category = State()
+    article_except_add = State()
+
+    redirects = {
+        "projects": projects_menu,
+        "categories": categories_menu,
+        "articles": articles_menu
+    }

@@ -18,7 +18,7 @@ def chose_project_window():
         ),
         Format("Выбери проект!"),
         keyboards.paginated_projects(selected.on_chosen_project),
-        Cancel(Const("Назад"), id="back_to_strt", on_click=selected.cancel_window),
+        Cancel(Const("⬅️ Назад"), id="back_to_strt", on_click=selected.cancel_window),
         state=EducationStates.select_project,
         getter=getters.get_projects_to_window
     )
@@ -40,7 +40,7 @@ def chose_category_window():
             ),
             width=2
         ),
-        Back(Const("Back")),
+        Back(Const("⬅️ Назад")),
         state=EducationStates.select_category,
         getter=getters.get_category_to_window
     )
@@ -63,7 +63,7 @@ def chose_article_window():
             width=2
 
         ),
-        Back(Const("Назад")),
+        Back(Const("⬅️ Назад")),
         state=EducationStates.select_article,
         getter=getters.get_articles_to_window
     )

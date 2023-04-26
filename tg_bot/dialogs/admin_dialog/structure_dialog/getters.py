@@ -47,19 +47,19 @@ async def get_columns(dialog_manager: DialogManager, **middleware_data):
     session = middleware_data.get("session")
     data = {}
 
-    if table == Project:
+    if table == Project.__tablename__:
         project_id = dialog_manager.dialog_data.get("project_id")
         project = await get_projects(session, Project.id == project_id)
         coll_names = [("Название проекта", "name"), ("Аббревиатура", "abbreviation")]
         data = {"coll_names": coll_names, "name": project[0].name}
 
-    if table == Category:
+    if table == Category.__tablename__:
         category_id = dialog_manager.dialog_data.get("category_id")
         category = await get_categories(session, Category.id == category_id)
         coll_names = [("Название проекта", "name")]
         data = {"coll_names": coll_names, "name": category[0].name, "project_name": category[0].project.name}
 
-    if table == Article:
+    if table == Article.__tablename__:
         article_id = dialog_manager.dialog_data.get("article_id")
         article = await get_articles(session, Article.id == article_id)
         coll_names = [("Название проекта", "name"), ("ссылка", "url")]

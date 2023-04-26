@@ -27,7 +27,7 @@ def users_window():
             id="scrolling_users",
             width=2, height=5
         ),
-        Back(Const("Назад")),
+        Back(Const("⬅️ Назад")),
         state=AdminPanelStates.select_user,
         getter=getters.get_users_to_window
     )
@@ -47,10 +47,10 @@ def user_info_window():
         Group(
             Button(Const("Разрешить/Запретить доступ"), id="change_allow", on_click=selected.on_allow),
             Button(Const("Разрешить/Запретить администрирование"), id="change_admin", on_click=selected.on_admin),
-            width=2
+            width=1
         ),
-        Button(Const("Удалить пользователя"), id="delete_user", on_click=selected.on_delete_user),
-        Back(Const("Назад")),
+        Button(Const("Удалить пользователя 🗑️"), id="delete_user", on_click=selected.on_delete_user),
+        Back(Const("⬅️ Назад")),
         state=AdminPanelStates.user_info,
         getter=getters.get_user_info
     )
@@ -59,8 +59,8 @@ def user_info_window():
 def except_delete_window():
     return Window(
         Format("Вы действительно хотите удалить пользователя: {full_name}"),
-        Button(Const("Да"), id="except_deleting_button", on_click=selected.except_deleting),
-        Back(Const("Назад")),
+        Button(Const("Да ✅"), id="except_deleting_button", on_click=selected.except_deleting),
+        Back(Const("⬅️ Назад")),
         state=AdminPanelStates.except_delete_user,
         getter=getters.get_deleting_user
     )

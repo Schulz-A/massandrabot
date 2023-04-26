@@ -17,10 +17,10 @@ def admin_functions_window():
             path=Enums.logo_path.value
         ),
         Group(
-            Button(Const("Пользователи"), id="users_panel", on_click=open_users_panel),
-            Button(Const("Структура"), id="structure_panel", on_click=open_structure_panel),
+            Button(Const("Пользователи 👥"), id="users_panel", on_click=open_users_panel),
+            Button(Const("Структура ⚙️"), id="structure_panel", on_click=open_structure_panel),
             width=2
         ),
-        Cancel(Const("Назад"), id="back_to_main", on_click=cancel_window),
+        Cancel(Const("⬅️ Назад"), id="back_to_main", on_click=cancel_window),
         state=states.AdminPanelStates.select_admin_function
     )

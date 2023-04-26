@@ -80,3 +80,15 @@ async def update_item(session: AsyncSession, table: Union[Article, Project, Cate
     stmt = update(table).where(*clauses).values(**values)
     await session.execute(stmt)
     await session.commit()
+
+
+async def delete_item(session: AsyncSession, table: Union[Article, Project, Category], *clauses):
+    stmt = delete(table).where(*clauses)
+    await session.execute(stmt)
+    await session.commit()
+
+
+async def add_item(session: AsyncSession, table: Union[Article, Project, Category], **values):
+    stmt = insert(table).values(values)
+    await session.execute(stmt)
+    await session.commit()

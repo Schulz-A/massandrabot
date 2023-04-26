@@ -34,7 +34,8 @@ async def main():
     config = get_config(".env")
     bot = Bot(token=config.tg_bot.token, parse_mode="HTML")
 
-    storage = RedisStorage.from_url("redis://127.0.0.1:6379/1", key_builder=DefaultKeyBuilder(with_destiny=True))
+    storage = RedisStorage.from_url("redis://127.0.0.1:6379/0", key_builder=DefaultKeyBuilder(with_destiny=True))
+    # storage = MemoryStorage()
     image_client = IMGBBClient(config.miscellaneous.photo_host)
 
     dp = Dispatcher(storage=storage, config=config, image_client=image_client)
