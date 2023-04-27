@@ -1,3 +1,4 @@
+import datetime
 from dataclasses import dataclass
 from typing import Any
 
@@ -34,6 +35,7 @@ class DBConfig:
 @dataclass
 class Miscellaneous:
     photo_host: str
+    spreadsheet_id: str
     scoped_credentials: Any = None
     google_scopes: list = None
 
@@ -77,6 +79,7 @@ def get_config(path: str = None) -> Config:
         ),
         miscellaneous=Miscellaneous(
             photo_host=env.str('PHOTO_HOST_API'),
+            spreadsheet_id=env.str('SPREADSHEET_ID'),
             scoped_credentials=scoped_credentials
         )
     )

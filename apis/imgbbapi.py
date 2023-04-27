@@ -28,5 +28,4 @@ class IMGBBClient(BaseClient):
             data=form
         )
         result = response[1]["data"]["url"]
-        print(response)
         return result

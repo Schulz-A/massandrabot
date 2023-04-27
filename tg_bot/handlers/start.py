@@ -17,9 +17,6 @@ async def start_bot(message: types.Message, dialog_manager: DialogManager, bot: 
     photo = BufferedInputFile.from_file(Enums.logo_path.value, "logo")
     del_m = await bot.send_photo(message.chat.id, photo=photo, caption="hi", reply_markup=start_keyboard)
     await state.update_data(mess_id=del_m.message_id)
-    # dialog_manager.show_mode = ShowMode.SEND
-    # await dialog_manager.reset_stack()
-    # await dialog_manager.start(StartState.start_state, mode=StartMode.RESET_STACK)
 
 
 @start_router.callback_query(F.data == "education")
