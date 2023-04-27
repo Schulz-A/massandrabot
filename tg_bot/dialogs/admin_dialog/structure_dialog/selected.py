@@ -6,7 +6,8 @@ from aiogram_dialog.widgets.input import TextInput
 from aiogram_dialog.widgets.kbd import Button, Select
 
 from tg_bot.dialogs.admin_dialog.states import AdminPanelStates
-from tg_bot.infrastucture.database.functions.queries import update_item, delete_item
+from tg_bot.infrastucture.database.functions.queries import (delete_item,
+                                                             update_item)
 from tg_bot.infrastucture.database.models import Article, Category, Project
 from tg_bot.misc.Enums import tables
 from tg_bot.misc.validators import validators

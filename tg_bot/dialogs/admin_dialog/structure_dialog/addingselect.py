@@ -4,8 +4,10 @@ from aiogram_dialog.widgets.input import TextInput
 from aiogram_dialog.widgets.kbd import Button, Select
 
 from tg_bot.dialogs.admin_dialog.states import AdminPanelStates
-from tg_bot.infrastucture.database.functions.queries import add_item, get_projects, get_categories
-from tg_bot.infrastucture.database.models import Project, Category, Article
+from tg_bot.infrastucture.database.functions.queries import (add_item,
+                                                             get_categories,
+                                                             get_projects)
+from tg_bot.infrastucture.database.models import Article, Category, Project
 from tg_bot.misc.Enums import tables
 from tg_bot.misc.validators import validators
 
@@ -24,7 +26,7 @@ async def enter_project_name(message: types.Message, widget: TextInput, dialog_m
     # await call.message.delete()
 
 
-async def enter_project_abbreviation(message: types.Message, widget: TextInput, dialog_manager: DialogManager, abb: str):
+async def enter_project_abbreviation(message: types.Message, widge: TextInput, dialog_manager: DialogManager, abb: str):
     try:
         validators["abbreviation"](abb)
     except ValueError as e:

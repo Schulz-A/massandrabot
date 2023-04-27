@@ -1,7 +1,8 @@
 from aiogram_dialog import DialogManager
 
-from tg_bot.infrastucture.database.functions.queries import get_projects, get_categories
-from tg_bot.infrastucture.database.models import Project, Category, Article
+from tg_bot.infrastucture.database.functions.queries import (get_categories,
+                                                             get_projects)
+from tg_bot.infrastucture.database.models import Article, Category, Project
 
 
 async def get_adding_project(dialog_manager: DialogManager, **middleware_data):

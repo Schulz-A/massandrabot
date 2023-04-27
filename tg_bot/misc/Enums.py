@@ -1,6 +1,6 @@
 from enum import Enum
 
-from tg_bot.infrastucture.database.models import Project, Category, Article
+from tg_bot.infrastucture.database.models import Article, Category, Project
 
 
 class Enums(Enum):

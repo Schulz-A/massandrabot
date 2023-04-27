@@ -6,7 +6,8 @@ from aiogram_dialog.widgets.kbd import Button, ScrollingGroup, Select
 from aiogram_dialog.widgets.text import Const, Format
 
 from tg_bot.dialogs.admin_dialog.states import AdminPanelStates
-from tg_bot.dialogs.admin_dialog.structure_dialog import addingselect, backs, addinggetters
+from tg_bot.dialogs.admin_dialog.structure_dialog import (addinggetters,
+                                                          addingselect, backs)
 
 
 def enter_project_name():
