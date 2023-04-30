@@ -9,7 +9,7 @@ from tg_bot.dialogs.admin_dialog.structure_dialog.windows import (
     change_column, except_delete_item, project_info, projects_window,
     structure_window)
 from tg_bot.dialogs.admin_dialog.users_dialog.windows import (
-    except_delete_window, user_info_window, users_window)
+    except_delete_window, user_group_window, user_info_window, users_window)
 from tg_bot.dialogs.admin_dialog.windows import admin_functions_window
 
 
@@ -19,6 +19,7 @@ def admin_dialog():
         users_window(),
         user_info_window(),
         except_delete_window(),
+        user_group_window(),
 
         structure_window(),
         projects_window(),

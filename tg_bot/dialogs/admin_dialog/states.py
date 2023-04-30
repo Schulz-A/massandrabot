@@ -6,6 +6,7 @@ class AdminPanelStates(StatesGroup):
     select_user = State()
     user_info = State()
     except_delete_user = State()
+    user_group = State()
 
     structure_menu = State()
 

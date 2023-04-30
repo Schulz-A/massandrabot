@@ -3,6 +3,7 @@ from aiogram.utils.keyboard import InlineKeyboardBuilder
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from tg_bot.infrastucture.database.functions.queries import get_projects
+from tg_bot.misc.callbackdata import WorkSheetData
 
 start_keyboard = InlineKeyboardMarkup(
     inline_keyboard=[
@@ -12,11 +13,12 @@ start_keyboard = InlineKeyboardMarkup(
     ]
 )
 
-close_button = InlineKeyboardButton(text="Закрыть", callback_data="close_fixer")
+close_button = InlineKeyboardButton(text="Закрыть ❌", callback_data="close_fixer")
 
 fix_menu = InlineKeyboardMarkup(
     inline_keyboard=[
-        [InlineKeyboardButton(text="Заполнить заявку", callback_data="start_form")],
+        [InlineKeyboardButton(text="Заполнить заявку", callback_data=WorkSheetData(WS_inx=0).pack())],
+        [InlineKeyboardButton(text="Учет инвентаря", callback_data=WorkSheetData(WS_inx=1).pack())],
         [close_button]
     ]
 )

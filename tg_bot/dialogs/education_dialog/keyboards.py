@@ -1,11 +1,11 @@
 import operator
 
-from aiogram_dialog.widgets.kbd import ScrollingGroup, Select
+from aiogram_dialog.widgets.kbd import Group, Select
 from aiogram_dialog.widgets.text import Format
 
 
 def paginated_projects(on_click):
-    return ScrollingGroup(
+    return Group(
         Select(
             Format("{item.name}"),
             id="projects_group",
@@ -13,6 +13,5 @@ def paginated_projects(on_click):
             items="projects",
             on_click=on_click
         ),
-        id="scrolling_projects",
-        width=1, height=4
+        width=1
     )

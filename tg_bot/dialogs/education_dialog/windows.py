@@ -1,7 +1,8 @@
 import operator
 
 from aiogram_dialog import Window
-from aiogram_dialog.widgets.kbd import Back, Cancel, Group, Select
+from aiogram_dialog.widgets.kbd import (Back, Cancel, Group, ScrollingGroup,
+                                        Select)
 from aiogram_dialog.widgets.media import StaticMedia
 from aiogram_dialog.widgets.text import Const, Format
 
@@ -52,7 +53,7 @@ def chose_article_window():
             path=Enums.logo_path.value
         ),
         Const("hi"),
-        Group(
+        ScrollingGroup(
             SelectURL(
                 text=Format("{item.name}"),
                 url=Format("{item.url}"),
@@ -60,8 +61,8 @@ def chose_article_window():
                 item_id_getter=operator.attrgetter("id"),
                 items="articles",
             ),
-            width=2
-
+            id="scrolling_articles",
+            width=2, height=4,
         ),
         Back(Const("⬅️ Назад")),
         state=EducationStates.select_article,

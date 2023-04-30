@@ -12,6 +12,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from apis.imgbbapi import IMGBBClient
 from tg_bot.config import Config
+from tg_bot.misc.callbackdata import WorkSheetData
 from tg_bot.misc.startkeyboard import (build_project_keyboard, close_button,
                                        fix_menu)
 
@@ -20,8 +21,14 @@ fix_router = Router()
 
 @fix_router.callback_query(F.data == "fixer")
 async def start_fix_menu(call: types.CallbackQuery):
+    text = f"Меню технического состояния\n\n" \
+           f"Команда {hbold('Заполнить заявку')}\n" \
+           f"Отвечает за заполнения формы в случае каких либо поломок или неисправностей\n\n" \
+           f"Команда {hbold('Учет инвентаря')}\n" \
+           f"Сюда нужно скидывать неисправный инвентарь"
+
     await call.message.answer(
-        text=f"Меню технического состояния. Для заполнения формы нажмите {hbold('Заполнить заявку')}",
+        text=text,
         reply_markup=fix_menu
     )
 
@@ -32,8 +39,9 @@ async def close_fix_menu(call: types.CallbackQuery, state: FSMContext):
     await state.set_state(None)
 
 
-@fix_router.callback_query(F.data == "start_form")
-async def start_form(call: types.CallbackQuery, state: FSMContext):
+@fix_router.callback_query(WorkSheetData.filter())
+async def start_form(call: types.CallbackQuery, state: FSMContext, callback_data: WorkSheetData):
+    await state.update_data(ws_inx=callback_data.WS_inx)
     edited_message = await call.message.edit_text(
         text="Напишите фамилию и имя",
         reply_markup=InlineKeyboardMarkup(inline_keyboard=[[close_button]])
@@ -144,10 +152,30 @@ async def enter_photo(
     project = data.get("project")
 
     google_client = await google_client_manager.authorize()
+    ws_inx = data.get("ws_inx")
     spreadsheet = await google_client.open_by_key(config.miscellaneous.spreadsheet_id)
-    worksheet = await spreadsheet.get_worksheet(0)
+    worksheet = await spreadsheet.get_worksheet(ws_inx)
     url = "=IMAGE(\"{}\")".format(photo_url)
     await worksheet.append_row(
         values=[name, project, problem, url, date.date().strftime("%d/%m/%Y")],
         value_input_option=gspread.utils.ValueInputOption.user_entered
+    )
+
+    branch = "Тех. Состояние" if ws_inx == 0 else "Оборудование"
+
+    caption = f"{hbold('У вас новая задача!!!')}\n\n" \
+              f"{hbold('Раздел:')} {branch}\n\n" \
+              f"{hbold('Имя заполнителя:')} {name}\n\n" \
+              f"{hbold('Проект:')} {project}\n\n" \
+              f"{hbold('Описание проблемы:')} {problem}"
+
+    await bot.send_photo(
+        chat_id=config.tg_bot.group_id,
+        photo=photo_url,
+        caption=caption,
+        reply_markup=InlineKeyboardMarkup(
+            inline_keyboard=[
+                [InlineKeyboardButton(text="Перейти в таблицу", url=spreadsheet.url)]
+            ]
+        )
     )

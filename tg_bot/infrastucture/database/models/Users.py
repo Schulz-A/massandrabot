@@ -11,7 +11,7 @@ class Project(DataBaseModel):
     __tablename__ = "projects"
 
     id = Column(UUID(as_uuid=True), primary_key=True, unique=True, default=uuid.uuid4)
-    name = Column(String(length=255))
+    name = Column(String(length=255), unique=True)
     abbreviation = Column(String(length=20))
     categories = relationship("Category", back_populates="project")
 
@@ -46,5 +46,8 @@ class User(DataBaseModel):
     full_name = Column(String(length=255), default=None)
     allow = Column(Boolean, default=False)
     is_admin = Column(Boolean, default=False)
+    superuser = Column(Boolean, default=False)
     photo_path = Column(String(length=510))
     created_date = Column(TIMESTAMP(timezone=True), default=func.now())
+    project_id = Column(UUID, ForeignKey("projects.id", ondelete="SET NULL"))
+    group = relationship("Project")

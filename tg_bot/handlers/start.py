@@ -3,9 +3,12 @@ from aiogram.filters import CommandStart
 from aiogram.fsm.context import FSMContext
 from aiogram.types import BufferedInputFile
 from aiogram_dialog import DialogManager, StartMode
+from sqlalchemy.ext.asyncio import AsyncSession
 
 from tg_bot.dialogs.admin_dialog.states import AdminPanelStates
 from tg_bot.dialogs.education_dialog.states import EducationStates
+from tg_bot.infrastucture.database.functions.queries import get_user
+from tg_bot.infrastucture.database.models import User
 from tg_bot.misc.Enums import Enums
 from tg_bot.misc.startkeyboard import start_keyboard
 
@@ -28,15 +31,20 @@ async def start_education_dialog(call: types.CallbackQuery, dialog_manager: Dial
 
 
 @start_router.callback_query(F.data == "admin_panel")
-async def start_admin_panel(call: types.CallbackQuery, dialog_manager: DialogManager, bot: Bot, state: FSMContext):
+async def start_admin_panel(
+        call: types.CallbackQuery,
+        dialog_manager: DialogManager,
+        bot: Bot,
+        state: FSMContext,
+        session: AsyncSession):
+
+    user = await get_user(session, User.id == call.message.chat.id)
+
+    if not user.is_admin:
+        await call.answer("Вы не являетесь администратором!", show_alert=True)
+        return
+
     data = await state.get_data()
     mess_id = data.get("mess_id")
     await bot.delete_message(call.message.chat.id, mess_id)
     await dialog_manager.start(AdminPanelStates.select_admin_function, mode=StartMode.RESET_STACK)
-
-
-# @start_router.message(F.text == "удалить")
-# async def delete_photo(message: types.Message, session: AsyncSession):
-#     user = await get_user(session, User.id == message.from_user.id)
-#
-#     await asyncio.to_thread(os.unlink, user.photo_path)

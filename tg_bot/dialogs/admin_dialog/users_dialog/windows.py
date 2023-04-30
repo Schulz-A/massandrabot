@@ -42,17 +42,40 @@ def user_info_window():
             "Пользователь: {full_name}\n"
             "ID: {id}\n"
             "Доступ: {allow}\n"
-            "Является администратором: {is_admin}"
+            "Является администратором: {is_admin}\n"
+            "Группа: {group}"
         ),
         Group(
             Button(Const("Разрешить/Запретить доступ"), id="change_allow", on_click=selected.on_allow),
             Button(Const("Разрешить/Запретить администрирование"), id="change_admin", on_click=selected.on_admin),
+            Button(Const("Выбрать группу"), id="chose_group", on_click=selected.on_groups),
             width=1
         ),
         Button(Const("Удалить пользователя 🗑️"), id="delete_user", on_click=selected.on_delete_user),
         Back(Const("⬅️ Назад")),
         state=AdminPanelStates.user_info,
         getter=getters.get_user_info
+    )
+
+
+def user_group_window():
+    return Window(
+        Format("Выбери группу для пользователя"),
+        Group(
+            Select(
+                Format("{item.name}"),
+                id="projects_group",
+                item_id_getter=operator.attrgetter("id"),
+                items="projects",
+                on_click=selected.on_chosen_group
+            ),
+            width=2
+        ),
+        Button(Const("Суперюзер 🥷"), id="superuser", on_click=selected.on_superuser),
+        Button(Const("Очистить группы ♻️"), id="clear_group", on_click=selected.on_clear_group),
+        Button(Const("⬅️ Назад"), id="back_to_user", on_click=selected.back_to_user),
+        state=AdminPanelStates.user_group,
+        getter=getters.get_projects_to_window
     )
 
 

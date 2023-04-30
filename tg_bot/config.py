@@ -9,7 +9,7 @@ from sqlalchemy import URL
 @dataclass
 class TgBot:
     token: str
-    admins: list[int]
+    group_id: int
 
 
 @dataclass
@@ -67,7 +67,7 @@ def get_config(path: str = None) -> Config:
     return Config(
         tg_bot=TgBot(
             token=env.str('BOT_TOKEN'),
-            admins=list(map(int, env.list('ADMINS')))
+            group_id=env.int('GROUP_ID')
         ),
         db_config=DBConfig(
             host=env.str('DB_HOST'),

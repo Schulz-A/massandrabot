@@ -53,3 +53,35 @@ async def except_deleting(call: types.CallbackQuery, widget: Button, dialog_mana
         await asyncio.to_thread(os.unlink, photo_path)
 
     await dialog_manager.switch_to(AdminPanelStates.select_user)
+
+
+async def on_groups(call: types.CallbackQuery, widget: Button, dialog_manager: DialogManager):
+    await dialog_manager.switch_to(AdminPanelStates.user_group)
+
+
+async def on_chosen_group(call: types.CallbackQuery, widget: Select, dialog_manager: DialogManager, project_id: str):
+    session = dialog_manager.middleware_data.get("session")
+    user_id = dialog_manager.dialog_data.get("user_id")
+
+    await update_user(session, User.id == user_id, project_id=project_id)
+    await call.answer("Значение изменено", show_alert=True)
+
+
+async def on_superuser(call: types.CallbackQuery, widget: Button, dialog_manager: DialogManager):
+    session = dialog_manager.middleware_data.get("session")
+    user_id = dialog_manager.dialog_data.get("user_id")
+
+    await update_user(session, User.id == user_id, superuser=True)
+    await call.answer("Значение изменено", show_alert=True)
+
+
+async def on_clear_group(call: types.CallbackQuery, widget: Button, dialog_manager: DialogManager):
+    session = dialog_manager.middleware_data.get("session")
+    user_id = dialog_manager.dialog_data.get("user_id")
+
+    await update_user(session, User.id == user_id, project_id=None, superuser=False)
+    await call.answer("Значение изменено", show_alert=True)
+
+
+async def back_to_user(call: types.CallbackQuery, widget: Button, dialog_manager: DialogManager):
+    await dialog_manager.switch_to(AdminPanelStates.user_info)

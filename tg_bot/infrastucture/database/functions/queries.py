@@ -10,7 +10,7 @@ from tg_bot.infrastucture.database.models import (Article, Category, Project,
 
 
 async def get_user(session: AsyncSession, *clauses):
-    stmt = select(User).where(*clauses)
+    stmt = select(User).options(selectinload(User.group)).where(*clauses)
     result = await session.execute(stmt)
     user = result.scalars().first()
     return user
@@ -30,7 +30,7 @@ async def delete_user(session: AsyncSession, *clauses):
 
 
 async def get_users(session: AsyncSession, *clauses):
-    stmt = select(User).where(*clauses)
+    stmt = select(User).options(selectinload(User.group)).where(*clauses)
     result = await session.execute(stmt)
     await session.commit()
     users = result.scalars().all()
