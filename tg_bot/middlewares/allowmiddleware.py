@@ -1,11 +1,12 @@
 from typing import Any, Awaitable, Callable, Dict
 
 from aiogram import BaseMiddleware, Bot
-from aiogram.types import BufferedInputFile, Message
+from aiogram.types import BufferedInputFile, Message, InlineKeyboardMarkup, InlineKeyboardButton
 
 from tg_bot.infrastucture.database.functions.queries import (
     add_user, fetch_users_with_params, get_user)
 from tg_bot.infrastucture.database.models import User
+from tg_bot.misc.callbackdata import UserData
 
 
 class AllowMiddleWare(BaseMiddleware):
@@ -52,7 +53,29 @@ class AllowMiddleWare(BaseMiddleware):
                 await bot.send_photo(
                     chat_id=admin.id,
                     photo=photo,
-                    caption=text_for_message
+                    caption=text_for_message,
+                    reply_markup=InlineKeyboardMarkup(
+                        inline_keyboard=[
+                            [
+                                InlineKeyboardButton(
+                                    text="Разрешить доступ пользователю",
+                                    callback_data=UserData(user_id=user_id, action="accept").pack()
+                                )
+                            ],
+                            [
+                                InlineKeyboardButton(
+                                    text="Отменить",
+                                    callback_data=UserData(user_id=user_id, action="cancel").pack()
+                                )
+                            ],
+                            [
+                                InlineKeyboardButton(
+                                    text="Удалить пользователя",
+                                    callback_data=UserData(user_id=user_id, action="delete").pack()
+                                )
+                            ]
+                        ]
+                    )
                 )
             return
 

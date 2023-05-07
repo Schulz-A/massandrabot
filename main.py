@@ -10,6 +10,7 @@ from apis.imgbbapi import IMGBBClient
 from tg_bot.config import get_config
 from tg_bot.dialogs.dialogregister import register_all_dialogs
 from tg_bot.handlers.fixer_handlers import fix_router
+from tg_bot.handlers.newuser_handlers import new_user_router
 from tg_bot.handlers.start import start_router
 from tg_bot.infrastucture.database.functions.setup import create_session_pool
 from tg_bot.middlewares.allowmiddleware import AllowMiddleWare
@@ -35,7 +36,7 @@ async def main():
     config = get_config(".env")
     bot = Bot(token=config.tg_bot.token, parse_mode="HTML")
 
-    storage = RedisStorage.from_url("redis://127.0.0.1:6379/0", key_builder=DefaultKeyBuilder(with_destiny=True))
+    storage = RedisStorage.from_url("redis://redis/0", key_builder=DefaultKeyBuilder(with_destiny=True))
     # storage = MemoryStorage()
     image_client = IMGBBClient(config.miscellaneous.photo_host)
     google_client_manager = gspread_asyncio.AsyncioGspreadClientManager(
@@ -53,7 +54,8 @@ async def main():
 
     routers = [
         start_router,
-        fix_router
+        fix_router,
+        new_user_router,
 
     ]
 
